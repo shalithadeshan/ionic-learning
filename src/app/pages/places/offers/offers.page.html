@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button menu="menu-content"></ion-menu-button>
+        </ion-buttons>
+        <ion-title>My Offers</ion-title>
+        <ion-buttons slot="primary">
+            <ion-button routerLink="/places/tabs/offers/new">
+                <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12">
+                <ion-list>
+                    <ion-item *ngFor="let offer of offers" [routerLink]="['/', 'places', 'tabs', 'offers', offer.id]">
+                        <ion-thumbnail slot="start">
+                            <img [src]="offer.imgUrl" />
+                        </ion-thumbnail>
+                        <ion-label>{{ offer.title }}</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
