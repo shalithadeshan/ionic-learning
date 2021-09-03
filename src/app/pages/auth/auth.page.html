@@ -5,7 +5,8 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <ion-button (click)="onLogin()" color="primary">
+    <!-- <ion-spinner name="lines" *ngIf="isLoading"></ion-spinner> -->
+    <ion-button (click)="onLogin()" color="primary" *ngIf="!isLoading">
         LogIn
     </ion-button>
 

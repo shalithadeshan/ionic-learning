@@ -11,6 +11,14 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+    <ion-segment value="all" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="all">
+            <ion-label>All Places</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="bookable">
+            <ion-label>Bookable Places</ion-label>
+        </ion-segment-button>
+    </ion-segment>
     <ion-grid>
         <ion-row>
             <ion-col size="12" class="ion-text-center">
@@ -33,8 +41,8 @@
         </ion-row>
         <ion-row>
             <ion-col size="12" class="ion-text-center">
-                <ion-list>
-                    <ion-item *ngFor="let place of placesList.slice(1)" [routerLink]="['/', 'places', 'tabs', 'discover', place.id]" detail>
+                <ion-virtual-scroll [items]="loadedPlaces" approxItemHeight="70px">
+                    <ion-item *virtualItem="let place" [routerLink]="['/', 'places', 'tabs', 'discover', place.id]" detail>
                         <ion-thumbnail slot="start">
                             <img src="{{ place.imgUrl }}" />
                         </ion-thumbnail>
@@ -45,7 +53,7 @@
                             <p>{{ place.description }}</p>
                         </ion-label>
                     </ion-item>
-                </ion-list>
+                </ion-virtual-scroll>
             </ion-col>
         </ion-row>
     </ion-grid>
