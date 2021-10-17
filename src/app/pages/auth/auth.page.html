@@ -5,9 +5,24 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <!-- <ion-spinner name="lines" *ngIf="isLoading"></ion-spinner> -->
-    <ion-button (click)="onLogin()" color="primary" *ngIf="!isLoading">
-        LogIn
-    </ion-button>
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <ion-list>
+            <ion-item>
+                <ion-label position="floating">E-mail</ion-label>
+                <ion-input type="email" ngModel name="email" required email></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Password</ion-label>
+                <ion-input type="password" ngModel name="password" required minlength="6"></ion-input>
+            </ion-item>
+        </ion-list>
+        <!-- <ion-spinner name="lines" *ngIf="isLoading"></ion-spinner> -->
+        <ion-button type="button" fill="clear" expand="full">
+            Switch to Login
+        </ion-button>
+        <ion-button type="submit" expand="block" color="primary" *ngIf="!isLoading">
+            LogIn
+        </ion-button>
+    </form>
 
 </ion-content>
