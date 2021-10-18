@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Authenticate</ion-title>
+        <ion-title>{{ isLogin ? 'Login' : 'SignUp' }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -9,18 +9,24 @@
         <ion-list>
             <ion-item>
                 <ion-label position="floating">E-mail</ion-label>
-                <ion-input type="email" ngModel name="email" required email></ion-input>
+                <ion-input type="email" ngModel name="email" #emailCtrl="ngModel" required email></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!emailCtrl.valid && emailCtrl.touched" lines="none">
+                <ion-label class="text-danger">Should be valid Email address</ion-label>
             </ion-item>
             <ion-item>
                 <ion-label position="floating">Password</ion-label>
-                <ion-input type="password" ngModel name="password" required minlength="6"></ion-input>
+                <ion-input type="password" ngModel name="password" #passwordCtrl="ngModel" required minlength="6"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!passwordCtrl.valid && passwordCtrl.touched" lines="none">
+                <ion-label class="text-danger">Should be valid Password</ion-label>
             </ion-item>
         </ion-list>
         <!-- <ion-spinner name="lines" *ngIf="isLoading"></ion-spinner> -->
-        <ion-button type="button" fill="clear" expand="full">
-            Switch to Login
+        <ion-button type="button" fill="clear" expand="full" (click)="onSwitchAuth()">
+            Switch to {{ isLogin ? 'Signup' : 'Login' }}
         </ion-button>
-        <ion-button type="submit" expand="block" color="primary" *ngIf="!isLoading">
+        <ion-button type="submit" expand="block" [disabled]="!f.valid" color="primary" *ngIf="!isLoading">
             LogIn
         </ion-button>
     </form>

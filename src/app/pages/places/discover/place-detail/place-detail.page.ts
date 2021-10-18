@@ -97,6 +97,7 @@ export class PlaceDetailPage implements OnInit {
         swipeToClose: true,
         componentProps: {
           selectedPlace: this.place,
+          selectedMode: mode,
         },
       })
       .then((modals) => {

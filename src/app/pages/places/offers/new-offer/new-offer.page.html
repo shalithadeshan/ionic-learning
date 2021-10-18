@@ -5,26 +5,59 @@
             </ion-back-button>
         </ion-buttons>
         <ion-title>New Offer</ion-title>
+        <ion-buttons slot="primary">
+            <ion-button (click)="onCreateOffer()" [disabled]="!form.valid">
+                <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-grid fixed>
-        <ion-row class="ion-align-items-center ion-justify-content-center">
-            <ion-col size="4">Row 1 col 1</ion-col>
-            <ion-col size="4">
-                <ion-card>
-                    <ion-card-content>
-                        <h1>The Column</h1>
-                        <p>Row 1 Col 2</p>
-                    </ion-card-content>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col>Row 2 Col 1</ion-col>
-            <ion-col>Row 2 Col 2</ion-col>
-        </ion-row>
-    </ion-grid>
-
+    <form [formGroup]="form">
+        <ion-grid fixed>
+            <ion-row>
+                <ion-col size-sm="6" offset-sm="3">
+                    <ion-item>
+                        <ion-label position="floating">Title</ion-label>
+                        <ion-input formControlName="title" type="text" autocomplete autocorrect></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size-sm="6" offset-sm="3">
+                    <ion-item>
+                        <ion-label position="floating">Short Description</ion-label>
+                        <ion-textarea rows="3" formControlName="description" type="text"></ion-textarea>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="!form.get('description').valid && form.get('description').touched">
+                <ion-col size-sm="6"></ion-col>
+                <p>Description must be between 1 and 180 characters</p>
+            </ion-row>
+            <ion-row>
+                <ion-col size-sm="6" offset-sm="3">
+                    <ion-item>
+                        <ion-label position="floating">Price</ion-label>
+                        <ion-input formControlName="price" type="number"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size-sm="3" offset-sm="3">
+                    <ion-item>
+                        <ion-label>Available From</ion-label>
+                        <ion-datetime formControlName="dateFrom" min="2021-01-01" max="2025-12-31"></ion-datetime>
+                    </ion-item>
+                </ion-col>
+                <ion-col size-sm="3">
+                    <ion-item>
+                        <ion-label>Available To</ion-label>
+                        <ion-datetime formControlName="dateTo" min="2021-01-02" max="2025-12-31"></ion-datetime>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
 </ion-content>

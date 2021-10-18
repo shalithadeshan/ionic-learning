@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Place } from '../../place.model';
@@ -11,6 +12,7 @@ import { PlacesService } from '../../places.service';
 })
 export class EditOfferPage implements OnInit {
   place: Place;
+  form: FormGroup;
   constructor(
     private activatedRoute: ActivatedRoute,
     private placesService: PlacesService,
@@ -24,6 +26,23 @@ export class EditOfferPage implements OnInit {
         return;
       }
       this.place = this.placesService.getPlace(param.get('placeId'));
+      this.form = new FormGroup({
+        title: new FormControl(this.place.title, {
+          updateOn: 'blur',
+          validators: [Validators.required],
+        }),
+        description: new FormControl(this.place.description, {
+          updateOn: 'blur',
+          validators: [Validators.required],
+        }),
+      });
     });
+  }
+
+  onUpdateOffer() {
+    if (!this.form.valid) {
+      return;
+    }
+    console.log('Create offer', this.form);
   }
 }

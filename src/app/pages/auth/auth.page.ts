@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 })
 export class AuthPage implements OnInit {
   isLoading = false;
+  isLogin = true;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -20,7 +21,19 @@ export class AuthPage implements OnInit {
   ngOnInit() {}
 
   onSubmit(form: NgForm) {
-    console.log(form, 'hi');
+    if (!form.valid) {
+      return;
+    }
+
+    const email = form.value.email;
+    const password = form.value.password;
+    console.log(email, password);
+
+    if (this.isLogin) {
+      // this.onLogin(email, password);
+    } else {
+    }
+
     this.authService.login();
     this.isLoading = true;
     this.loadingCtrl
@@ -36,5 +49,9 @@ export class AuthPage implements OnInit {
           this.router.navigateByUrl('/places/tabs/discover');
         }, 1500);
       });
+  }
+
+  onSwitchAuth() {
+    this.isLogin = false;
   }
 }
