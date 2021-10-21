@@ -1,11 +1,14 @@
 import { Place } from './place.model';
 import { Injectable } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlacesService {
-  places: Place[] = [
+  place = new BehaviorSubject<Place[]>([
     new Place(
       'p1',
       'Manhattan Mansion',
@@ -13,7 +16,8 @@ export class PlacesService {
       'https://imgs.6sqft.com/wp-content/uploads/2014/06/21042534/Felix_Warburg_Mansion_007.jpg',
       200000,
       new Date('2019-01-01'),
-      new Date('2019-12-31')
+      new Date('2019-12-31'),
+      'abc'
     ),
     new Place(
       'p2',
@@ -23,7 +27,8 @@ export class PlacesService {
       'https://untappedcities.com/wp-content/uploads/2014/07/2-e-79th-st-Ukrainian-Institute-Harry-F.-Sinclair-House-Fifth-Avenue-NYC-1-1.jpg',
       400000,
       new Date('2019-01-01'),
-      new Date('2019-12-31')
+      new Date('2019-12-31'),
+      'abc'
     ),
     new Place(
       'p3',
@@ -33,16 +38,42 @@ export class PlacesService {
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQT-LF0uM5ceyAk3EU3fT2QQlsiPr2-0Tc2g&usqp=CAU',
       400000,
       new Date('2019-01-01'),
-      new Date('2019-12-31')
+      new Date('2019-12-31'),
+      'abc'
     ),
-  ];
+  ]);
 
-  constructor() {}
-
-  getPlaces() {
-    return [...this.places];
+  get places() {
+    return this.place.asObservable();
   }
+
+  constructor(private authService: AuthService) {}
+
   getPlace(id: string) {
-    return { ...this.places.find((p) => p.id === id) };
+    return this.places.pipe(
+      take(1),
+      map((places) => ({ ...places.find((p) => p.id === id) }))
+    );
+  }
+  addPlace(
+    title: string,
+    description: string,
+    price: number,
+    dateFrom: Date,
+    dateTo: Date
+  ) {
+    const newPlace = new Place(
+      Math.random().toString(),
+      title,
+      description,
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQT-LF0uM5ceyAk3EU3fT2QQlsiPr2-0Tc2g&usqp=CAU',
+      price,
+      dateFrom,
+      dateTo,
+      this.authService.userId
+    );
+    this.places.pipe(take(1)).subscribe((places) => {
+      this.place.next(places.concat(newPlace));
+    });
   }
 }
