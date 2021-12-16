@@ -16,7 +16,7 @@
             <ion-col size="12" class="ion-text-center ion-padding">
                 <p>{{ place.description }}</p>
             </ion-col>
-            <ion-col size="12" class="ion-text-center">
+            <ion-col size="12" class="ion-text-center" *ngIf="isBookable">
                 <ion-button (click)="onBookPlace()" color="primary">
                     Book
                 </ion-button>

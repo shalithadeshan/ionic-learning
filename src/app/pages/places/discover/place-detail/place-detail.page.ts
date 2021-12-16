@@ -1,3 +1,4 @@
+import { AuthService } from './../../../auth/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -20,6 +21,7 @@ import { PlacesService } from '../../places.service';
 export class PlaceDetailPage implements OnInit, OnDestroy {
   place: Place;
   placeSub: Subscription;
+  isBookable = false;
   constructor(
     private activatedRoute: ActivatedRoute,
     private navCtrl: NavController,
@@ -27,7 +29,8 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
     private bookingService: BookingService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -40,6 +43,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
         .getPlace(param.get('placeId'))
         .subscribe((place) => {
           this.place = place;
+          this.isBookable = place.userId !== this.authService.userId;
         });
     });
   }
@@ -119,7 +123,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
           this.loadingCtrl
             .create({ message: 'Booking place...' })
             .then((loadingEL) => {
-              // loadingEL.present();
+              loadingEL.present();
               const data = resultData.data.bookingData;
               this.bookingService
                 .addBooking(
@@ -133,7 +137,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
                   data.endDate
                 )
                 .subscribe(() => {
-                  // loadingEL.dismiss();
+                  loadingEL.dismiss();
                 });
             });
         }
